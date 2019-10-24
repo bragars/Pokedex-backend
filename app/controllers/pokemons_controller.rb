@@ -3,8 +3,7 @@ class PokemonsController < ApplicationController
 
   # GET /pokemons
   def index
-    @pokemons = Pokemon.all
-    @pokemons = Pokemon.page params[:page]
+    @pokemons = Pokemon.order(:id).page params[:page]
   end
 
   # GET /pokemons/1
