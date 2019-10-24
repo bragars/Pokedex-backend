@@ -4,6 +4,7 @@ class PokemonsController < ApplicationController
   # GET /pokemons
   def index
     @pokemons = Pokemon.all
+    @pokemons = Pokemon.page params[:page]
   end
 
   # GET /pokemons/1
@@ -44,6 +45,6 @@ class PokemonsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def pokemon_params
-    params.require(:pokemon).permit(:name, :image_url, :identifier, :weight, :heigth, :kind)
+    params.require(:pokemon).permit(:name, :image_url, :identifier, :weight, :heigth, :kind, :page)
   end
 end
