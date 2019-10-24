@@ -15,9 +15,11 @@ gem 'jbuilder', '~> 2.7'
 gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
+# Use kaminary for easy result pagination
 gem 'kaminari'
-gem 'cloudinary', require: false
+# Add cloudinary integration
+gem 'cloudinary'
+# Active Storage integration with cloudinary
 gem 'activestorage-cloudinary-service'
 
 # Use Active Storage variant
