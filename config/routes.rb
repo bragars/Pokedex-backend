@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   get "/users/:username", to: "users#show"
   post "/users", to: "users#create"
   post "/users/:username/starred/:pokemon", to: "users#add_pokemon"
-  delete "/users/:username/starred/:pokemon", to: "users#add_pokemon"
+  delete "/users/:username/starred/:pokemon", to: "users#remove_pokemon"
 end

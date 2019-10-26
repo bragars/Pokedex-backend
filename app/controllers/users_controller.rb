@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :add_pokemon, :remove_pokemon]
+  before_action :set_pokemon, only: [:add_pokemon, :remove_pokemon]
 
   # GET /users
   def index
@@ -35,11 +36,24 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def add_pokemon
+    @user.pokemons << @pokemon
+  end
+
+  def remove_pokemon
+    @user.pokemons.delete @pokemon
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find_by(username: params[:username])
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_pokemon
+    @pokemon = Pokemon.find_by(identifier: params[:pokemon])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
