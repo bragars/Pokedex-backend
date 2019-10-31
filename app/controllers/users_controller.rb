@@ -1,14 +1,12 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :add_pokemon, :remove_pokemon]
+  before_action :set_user, only: [:show, :destroy, :add_pokemon, :remove_pokemon]
   before_action :set_pokemon, only: [:add_pokemon, :remove_pokemon]
 
-  # GET /users
-  def index
-    @users = User.all
-  end
+
 
   # GET /users/1
   def show
+    render json:{user: @user, pokemons: @user.pokemons }
   end
 
   # POST /users
@@ -16,34 +14,35 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render :show, status: :created
+      render json: @user , status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /users/1
-  def update
-    if @user.update(user_params)
-      render :show, status: :ok
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /users/1
-  def destroy
-    @user.destroy
-  end
-
+ 
   def add_pokemon
-    @user.pokemons << @pokemon
+    @starred = @user.starreds.new(pokemon_id: @pokemon.id )
+   unless @user.starreds.find_by(pokemon_id: @pokemon.id )
+    if @starred.save
+      render json:  {user: @user, pokemons: @user.pokemons }, status: :created
+    else
+      render json:  @starred.erros, status: :unprocessable_entity
+    end
+   else
+    render json: {msg: "Esse pokemon já está em seus favoritos"}, status: :unprocessable_entity
+   end
+
   end
 
   def remove_pokemon
-    @user.pokemons.delete @pokemon
+    @starred = @user.starreds.find_by(pokemon_id: @pokemon.id )
+    if @starred.delete 
+      render json:  {user: @user, pokemons: @user.pokemons }, status: 200
+    else
+      render json: {msg: "Ocorreu um erro"}, status: :unprocessable_entity
+    end
   end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -53,11 +52,11 @@ class UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_pokemon
-    @pokemon = Pokemon.find_by(identifier: params[:pokemon])
+    @pokemon = Pokemon.find_by(name: params[:pokemon])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :username)
+    params.require(:user).permit(:username)
   end
 end

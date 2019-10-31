@@ -13,14 +13,12 @@ csv = CSV.parse(csv_text, :headers => true, :encoding => "UTF-8")
 
 csv.each do |row|
   poké = Pokemon.new
-  poké.id = row["_id"]
-  poké.name = row["name"]
+  poké.number = row["_id"]
+  poké.name = row["identifier"]
   poké.image_url = row["image_url"]
-  poké.identifier = row["identifier"]
   poké.weight = row["weight"].to_i
   poké.height = row["height"].to_i
   poké.kind = row["types"]
-
-  Pokemon.find(row["_id"]).destroy
   poké.save!
+  puts row["name"]
 end

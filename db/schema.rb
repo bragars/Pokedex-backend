@@ -10,10 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_193910) do
+ActiveRecord::Schema.define(version: 2019_10_31_144957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "Club10", id: :serial, force: :cascade do |t|
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -39,13 +42,13 @@ ActiveRecord::Schema.define(version: 2019_10_26_193910) do
   create_table "pokemons", force: :cascade do |t|
     t.string "name"
     t.string "image_url"
-    t.string "identifier"
+    t.integer "number"
     t.integer "weight"
     t.integer "height"
     t.string "kind"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["identifier"], name: "index_pokemons_on_identifier", unique: true
+    t.index ["name"], name: "index_pokemons_on_name", unique: true
   end
 
   create_table "starreds", force: :cascade do |t|
@@ -58,11 +61,9 @@ ActiveRecord::Schema.define(version: 2019_10_26_193910) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
+    t.string "username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "username"
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
